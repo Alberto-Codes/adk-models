@@ -4,7 +4,12 @@ A Google Agent Development Kit (ADK) project featuring agents that can answer qu
 
 ## Overview
 
-This project demonstrates how to build AI agents using the Google Agent Development Kit (ADK). The ADC (Agent Development Center) agent uses Google's Gemini models with the default authentication method (Application Default Credentials) to respond to user queries about time and weather in various cities.
+This project demonstrates how to build AI agents using the Google Agent Development Kit (ADK). It includes two implementations:
+
+1. **ADC Agent** (`adc/`) - Uses ADK's default authentication method (Application Default Credentials) with Google's Gemini models
+2. **OpenAI-Compatible Agent** (`openai/`) - Uses Google's OpenAI-compatible endpoint for Gemini models via the LiteLlm wrapper, authenticating with ADC credentials (not an API key)
+
+Both agents can respond to user queries about time and weather in various cities, showcasing different ways to connect to Google's Gemini models.
 
 ## Prerequisites
 
@@ -83,7 +88,9 @@ ADK's internal registry automatically:
 
 ### Alternative: Using Google AI Studio (API Key)
 
-If you prefer to use Google AI Studio instead of Vertex AI:
+**Required for the OpenAI-Compatible Agent:**
+
+If you want to use the OpenAI-compatible agent or prefer Google AI Studio:
 
 1. Get an API key from [Google AI Studio](https://aistudio.google.com/apikey)
 2. Set environment variables:
@@ -92,17 +99,19 @@ If you prefer to use Google AI Studio instead of Vertex AI:
    export GOOGLE_GENAI_USE_VERTEXAI=FALSE
    ```
 
+Note: The OpenAI-compatible agent (`openai_compat/`) requires the Google AI Studio API key and uses Google's OpenAI-compatible endpoint at `https://generativelanguage.googleapis.com/v1beta/openai/`.
+
 ### Environment Variables (.env file)
 
 Create a `.env` file in the project root to persist your environment variables:
 
 ```env
-# For Vertex AI (recommended for production)
+# For Vertex AI (used by the default ADC agent)
 GOOGLE_CLOUD_PROJECT=your-project-id
 GOOGLE_CLOUD_LOCATION=us-central1
 GOOGLE_GENAI_USE_VERTEXAI=TRUE
 
-# Alternative: For Google AI Studio
+# For Google AI Studio (required for OpenAI-compatible agent)
 # GOOGLE_API_KEY=your-api-key-here
 # GOOGLE_GENAI_USE_VERTEXAI=FALSE
 ```
@@ -131,6 +140,9 @@ GOOGLE_GENAI_USE_VERTEXAI=TRUE
    pip install google-adk
    # Or install all dependencies including dev tools:
    pip install -e .[dev]
+   
+   # For the OpenAI-compatible agent, you also need:
+   pip install openai
    ```
 
 ## Usage
@@ -183,26 +195,84 @@ adk-models/
 │       ├── __init__.py
 │       └── core/
 │           └── agents/
-│               └── adc/
+│               ├── adc/
+│               │   ├── __init__.py
+│               │   └── agent.py          # Default ADK authentication
+│               └── openai/
 │                   ├── __init__.py
-│                   └── agent.py          # Main agent implementation
+│                   └── agent.py          # OpenAI-compatible endpoint
 ├── pyproject.toml                        # Project configuration
 ├── README.md                            # This file
 ├── .env                                 # Environment variables (create this)
+├── .env.example                         # Environment template
 └── uv.lock                             # Dependency lock file
 ```
 
 ## Agent Details
 
-The ADC agent (`src/adk_models/core/agents/adc/agent.py`) demonstrates ADK's **default authentication approach**:
+This project includes two different agent implementations:
+
+### 1. ADC Agent (`src/adk_models/core/agents/adc/agent.py`)
+
+Demonstrates ADK's **default authentication approach**:
 
 - **Model**: `"gemini-2.0-flash"` - passed as a simple string to the Agent constructor
 - **Authentication**: Automatic via ADK's internal registry and Application Default Credentials
 - **Connection Method**: ADK automatically routes Gemini model requests through the `google-genai` library
 - **No Explicit Auth Code**: No need to manually configure authentication clients or credentials in your agent code
-- **Capabilities**: Ready to handle time and weather queries (tools can be added as needed)
 
-The agent leverages ADK's built-in model integration, where you simply specify the model name and ADK handles all the authentication and connection details behind the scenes.
+### 2. OpenAI-Compatible Agent (`src/adk_models/core/agents/openai/agent.py`)
+
+Demonstrates using Google's **OpenAI-compatible endpoint** with ADC credentials:
+
+- **Model**: `LiteLlm` instance configured for the OpenAI-compatible Gemini endpoint
+- **Endpoint**: `https://<location>-aiplatform.googleapis.com/v1/projects/<project>/locations/<location>/endpoints/openapi` (set via environment variables)
+- **Authentication**: Uses Application Default Credentials (ADC) to obtain a token, not an API key
+- **Compatibility**: Standard OpenAI interface for Gemini models via the LiteLlm wrapper
+- **Use Case**: Ideal for OpenAI-compatible workflows using Google Gemini with secure ADC authentication
+- **Dependencies**: Requires the `google-adk` Python library
+
+Both agents provide the same capabilities but showcase different connection methods to Google's Gemini models.
+
+## Usage Notes for OpenAI-Compatible Agent
+
+- Ensure you have set the following environment variables:
+  - `GOOGLE_CLOUD_PROJECT` (your GCP project ID)
+  - `GOOGLE_CLOUD_LOCATION` (your GCP region, e.g., `us-central1`)
+- The agent will use ADC credentials to authenticate and obtain a token for the OpenAI-compatible endpoint.
+- No API key is required for this agent; do not set `GOOGLE_API_KEY` for this workflow.
+
+## Example: OpenAI-Compatible Agent Initialization
+
+```python
+from google.adk.agents import Agent
+from google.adk.models.lite_llm import LiteLlm
+import os
+import google.auth
+import google.auth.transport.requests
+
+def create_api_key():
+    credentials, _ = google.auth.default(scopes=["https://www.googleapis.com/auth/cloud-platform"])
+    credentials.refresh(google.auth.transport.requests.Request())
+    return credentials.token
+
+model = LiteLlm(
+    api_base=(
+        f"https://{os.getenv('GOOGLE_CLOUD_LOCATION')}-aiplatform.googleapis.com/v1/"
+        f"projects/{os.getenv('GOOGLE_CLOUD_PROJECT')}/locations/"
+        f"{os.getenv('GOOGLE_CLOUD_LOCATION')}/endpoints/openapi"
+    ),
+    api_key=create_api_key(),
+    model="openai/google/gemini-2.0-flash",
+)
+
+agent = Agent(
+    name="openai_agent",
+    model=model,
+    description="Agent to answer questions about the time and weather in a city using Google's OpenAI-compatible endpoint.",
+    instruction="You are a helpful agent who can answer user questions about the time and weather in a city. You are powered by Google's Gemini model accessed through the OpenAI-compatible API.",
+)
+```
 
 ## Development
 
@@ -229,8 +299,9 @@ bash -c "ruff check src/ && ruff format --check src/ && ty check src/ && pytest"
 
 ### Adding New Tools
 
-To extend the agent with new capabilities, you can add custom tools while keeping the same default authentication approach:
+Both agents can be extended with new capabilities while maintaining their respective authentication approaches:
 
+**For the default ADC agent:**
 ```python
 def get_current_weather(city: str) -> dict:
     """Your tool implementation here"""
@@ -238,14 +309,39 @@ def get_current_weather(city: str) -> dict:
 
 root_agent = Agent(
     name="adc_agent",
-    model="gemini-2.0-flash",  # Same default model string
-    tools=[get_current_weather],  # Add your tools here
+    model="gemini-2.0-flash",  # Default ADK approach
+    tools=[get_current_weather],
     description="Agent with weather capabilities",
     instruction="You can help with weather and other queries",
 )
 ```
 
-The authentication remains automatic - ADK handles all the Gemini model connectivity behind the scenes.
+**For the OpenAI-compatible agent:**
+```python
+import os
+from google.adk.agents import Agent
+from openai import OpenAI
+
+class GeminiOpenAIModel:
+    def __init__(self, model_name: str = "gemini-2.0-flash"):
+        self.model_name = model_name
+        self.client = OpenAI(
+            api_key=os.getenv("GOOGLE_API_KEY"),
+            base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+        )
+
+def get_current_weather(city: str) -> dict:
+    """Your tool implementation here"""
+    pass
+
+root_agent = Agent(
+    name="adc_openai_compat_agent",
+    model=GeminiOpenAIModel("gemini-2.0-flash"),
+    tools=[get_current_weather],
+    description="Agent with weather capabilities via OpenAI endpoint",
+    instruction="You can help with weather and other queries",
+)
+```
 
 ## Troubleshooting
 
@@ -280,6 +376,8 @@ If your agent doesn't appear in the dropdown:
 - [Google ADK Documentation](https://google.github.io/adk-docs/)
 - [ADK Quickstart Guide](https://google.github.io/adk-docs/get-started/quickstart/)
 - [ADK Models & Authentication Guide](https://google.github.io/adk-docs/agents/models/) - Explains ADK's default authentication approach
+- [ADK Self-Hosted Endpoint Guide](https://google.github.io/adk-docs/agents/models/#self-hosted-endpoint-eg-vllm) - Documentation for using custom model wrappers
+- [Google Gemini OpenAI Compatibility](https://ai.google.dev/gemini-api/docs/openai) - Google's OpenAI-compatible endpoint documentation
 - [Application Default Credentials Setup](https://cloud.google.com/docs/authentication/provide-credentials-adc)
 - [Google Cloud CLI Installation](https://cloud.google.com/sdk/docs/install-sdk)
 - [Gemini Models Documentation](https://ai.google.dev/gemini-api/docs/models)
