@@ -1,10 +1,3 @@
-"""Arrr! This be the OpenAI-compatible Pirate Agent for answerin' time and
-weather questions.
-
-This here module provides a pirate agent that leverages Google ADC credentials
-to parley with the Gemini model through an OpenAI-compatible API endpoint,
-matey!
-"""
 
 import os
 
@@ -34,16 +27,6 @@ def create_api_key() -> Credentials:
 
 
 def create_agent() -> Agent:
-    """Summon an OpenAI-compatible pirate agent usin' Google's Gemini model, arrr!
-
-    This agent be ready to answer yer questions about time and weather in any
-    city, usin' the Gemini model via Vertex AI's OpenAI-compatible endpoint.
-    Credentials be refreshed and used as the API key, just like a true
-    buccaneer!
-
-    Returns:
-        Agent: A swashbucklin' agent ready to handle user queries.
-    """
     credentials = create_api_key()
     auth_req = google.auth.transport.requests.Request()
     credentials.refresh(auth_req)

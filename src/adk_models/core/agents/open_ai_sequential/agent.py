@@ -1,4 +1,8 @@
+"""OpenAI-compatible Sequential Agent package.
 
+This module provides the SequentialAgent implementation that uses Google's
+OpenAI-compatible endpoint for Gemini models.
+"""
 
 from google.adk.agents import SequentialAgent
 
@@ -9,20 +13,10 @@ from adk_models.core.agents.open_ai_pirate import (
 
 
 def create_agent() -> SequentialAgent:
-    """Summon an OpenAI-compatible pirate agent usin' Google's Gemini model, arrr!
-
-    This agent be ready to answer yer questions about time and weather in any
-    city, usin' the Gemini model via Vertex AI's OpenAI-compatible endpoint.
-    Credentials be refreshed and used as the API key, just like a true
-    buccaneer!
-
-    Returns:
-        Agent: A swashbucklin' agent ready to handle user queries.
-    """
+    """Create a SequentialAgent that combines OpenAI and Pirate agents."""
     return SequentialAgent(
         name="openai_sequential_agent",
-        sub_agents=[openai_agent,
-            openai_pirate_agent]
+        sub_agents=[openai_agent, openai_pirate_agent],
     )
 
 
