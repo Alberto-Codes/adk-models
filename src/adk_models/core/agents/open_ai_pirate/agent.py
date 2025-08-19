@@ -61,4 +61,4 @@ def create_agent() -> Agent:
     )
 
 
-root_agent = create_agent()
+root_agent: Agent = create_agent()

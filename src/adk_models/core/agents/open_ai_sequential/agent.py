@@ -20,4 +20,4 @@ def create_agent() -> SequentialAgent:
     )
 
 
-root_agent = create_agent()
+root_agent: SequentialAgent = create_agent()
