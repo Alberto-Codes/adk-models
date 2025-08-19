@@ -118,6 +118,12 @@ GOOGLE_GENAI_USE_VERTEXAI=TRUE
 
 ## Installation
 
+This project uses [`uv`](https://github.com/astral-sh/uv) for dependency management and running scripts. Please ensure you have `uv` installed:
+
+```bash
+pip install uv  # or see uv documentation for other install methods
+```
+
 1. **Clone the repository:**
    ```bash
    git clone <repository-url>
@@ -137,12 +143,7 @@ GOOGLE_GENAI_USE_VERTEXAI=TRUE
 
 3. **Install dependencies:**
    ```bash
-   pip install google-adk
-   # Or install all dependencies including dev tools:
-   pip install -e .[dev]
-   
-   # For the OpenAI-compatible agent, you also need:
-   pip install "openai<1.100"
+   uv sync --group dev
    ```
 
 > **Note:**
@@ -152,13 +153,9 @@ GOOGLE_GENAI_USE_VERTEXAI=TRUE
 
 ### Running the Agent
 
-There are several ways to interact with your ADK agent:
-
-#### 1. Interactive Web UI (Recommended)
-
-Launch the development web interface:
+To launch the development web interface, run:
 ```bash
-adk web
+uv run adk web src/adk_models/core/agents
 ```
 
 This will start a local server (usually at `http://localhost:8000`) where you can:
