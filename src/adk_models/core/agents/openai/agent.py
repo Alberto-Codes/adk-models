@@ -1,9 +1,4 @@
-"""OpenAI-compatible agent using Google's Vertex AI endpoint.
 
-This module provides an agent that uses Google's OpenAI-compatible endpoint
-for Gemini models, demonstrating how to connect to Gemini through the
-OpenAI protocol.
-"""
 
 import os
 
@@ -25,25 +20,18 @@ def create_api_key()-> Credentials:
 
 
 def create_agent() -> Agent:
-    """Create and return the ADC agent using OpenAI-compatible endpoint.
 
-    This agent uses Google's OpenAI-compatible endpoint for Gemini models,
-    demonstrating how to connect to Gemini through the OpenAI protocol
-    without using LiteLLM.
-
-    Returns:
-        Agent: Configured ADC agent using OpenAI-compatible endpoint.
-    """
     credentials = create_api_key()
     auth_req = google.auth.transport.requests.Request()
     credentials.refresh(auth_req)
     adc_token = credentials.token
     model = LiteLlm(
+        api_base=f"https://{os.getenv("GOOGLE_CLOUD_LOCATION")}-aiplatform.googleapis.com/v1/projects/{os.getenv("GOOGLE_CLOUD_PROJECT")}/locations/{os.getenv("GOOGLE_CLOUD_LOCATION")}/endpoints/openapi",
         api_key=adc_token,
         model="openai/google/gemini-2.0-flash",
     )
     return Agent(
-        name="adc_openai_compat_agent",
+        name="openai_agent",
         model=model,
         description=(
             "Agent to answer questions about the time and weather in a city "
