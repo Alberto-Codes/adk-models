@@ -28,7 +28,6 @@ def create_api_key() -> Credentials:
     credentials, _ = google.auth.default(
         scopes=["https://www.googleapis.com/auth/cloud-platform"]
     )
-    print("Using ADC credentials:", credentials)
     return credentials
 
 
