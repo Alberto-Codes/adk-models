@@ -1,0 +1,411 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    // ===============================
+    // LINTING AND QUALITY CHECKS
+    // ===============================
+    {
+      "label": "Ruff: Check",
+      "type": "shell",
+      "command": "ruff",
+      "args": ["check", "src/"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "problemMatcher": {
+        "owner": "ruff",
+        "fileLocation": "relative",
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+):\\s+(\\w+)\\s+(.*)\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5,
+          "code": 6
+        }
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Ruff: Check and Fix",
+      "type": "shell",
+      "command": "ruff",
+      "args": ["check", "--fix", "src/"],
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "problemMatcher": {
+        "owner": "ruff",
+        "fileLocation": "relative",
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+):\\s+(\\w+)\\s+(.*)\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5,
+          "code": 6
+        }
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Ruff: Format",
+      "type": "shell",
+      "command": "ruff",
+      "args": ["format", "src/"],
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "silent",
+        "showReuseMessage": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Ruff: Format Check",
+      "type": "shell",
+      "command": "ruff",
+      "args": ["format", "--check", "src/"],
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    
+    // ===============================
+    // TYPE CHECKING
+    // ===============================
+    {
+      "label": "Type Check",
+      "type": "shell",
+      "command": "ty",
+      "args": ["check", "src/"],
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "problemMatcher": {
+        "owner": "mypy",
+        "fileLocation": "relative",
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|warning|note):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        }
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    
+    // ===============================
+    // TESTING
+    // ===============================
+    {
+      "label": "Test: Run All",
+      "type": "shell",
+      "command": "pytest",
+      "args": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "problemMatcher": {
+        "owner": "pytest",
+        "fileLocation": "relative",
+        "pattern": [
+          {
+            "regexp": "^(.*):(\\d+):(\\d+).*$",
+            "file": 1,
+            "line": 2,
+            "column": 3
+          },
+          {
+            "regexp": "^.*AssertionError: (.*)$",
+            "message": 1,
+            "loop": true
+          }
+        ]
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Test: Run with Coverage",
+      "type": "shell",
+      "command": "pytest",
+      "args": ["--cov=src", "--cov-report=html", "--cov-report=term"],
+      "group": "test",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Test: Run Current File",
+      "type": "shell",
+      "command": "pytest",
+      "args": ["${file}"],
+      "group": "test",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    
+    // ===============================
+    // APPLICATION RUNNING
+    // ===============================
+    {
+      "label": "Run: Application",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "new_project"],
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Run: Current File",
+      "type": "shell",
+      "command": "python",
+      "args": ["${file}"],
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    
+    // ===============================
+    // COMPOUND TASKS
+    // ===============================
+    {
+      "label": "Quality: Full Check",
+      "dependsOn": [
+        "Ruff: Check",
+        "Type Check",
+        "Test: Run All"
+      ],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "Quality: Fix and Format",
+      "dependsOn": [
+        "Ruff: Check and Fix",
+        "Ruff: Format"
+      ],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      }
+    },
+    {
+      "label": "CI: Pre-commit Check",
+      "dependsOn": [
+        "Ruff: Check",
+        "Ruff: Format Check", 
+        "Type Check",
+        "Test: Run with Coverage"
+      ],
+      "dependsOrder": "sequence",
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      }
+    },
+    
+    // ===============================
+    // DEVELOPMENT UTILITIES
+    // ===============================
+    {
+      "label": "Quality: Run Script",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "echo '🔍 Running comprehensive Python quality checks...' && ruff check src/ && echo '✅ Ruff linting passed' && ruff format --check src/ && echo '✅ Ruff formatting check passed' && ty check src/ && echo '✅ Type checking passed' && pytest && echo '🎉 All quality checks passed!'"],
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false,
+        "clear": true
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Install: Dev Dependencies",
+      "type": "shell",
+      "command": "uv",
+      "args": ["sync", "--group", "dev"],
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Clean: Cache and Temp Files",
+      "type": "shell",
+      "command": "find",
+      "args": [".", "-type", "d", "-name", "__pycache__", "-exec", "rm", "-rf", "{}", "+", ";", "find", ".", "-name", "*.pyc", "-delete"],
+      "group": "build",
+      "presentation": {
+        "panel": "shared",
+        "reveal": "silent",
+        "showReuseMessage": false
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "linux": {
+        "command": "find",
+        "args": [".", "-type", "d", "-name", "__pycache__", "-exec", "rm", "-rf", "{}", "+", ";", "find", ".", "-name", "*.pyc", "-delete"]
+      },
+      "windows": {
+        "command": "cmd",
+        "args": ["/c", "for /d /r . %d in (__pycache__) do @if exist \"%d\" rd /s /q \"%d\" & del /s /q *.pyc"]
+      }
+    },
+    
+    // ===============================
+    // WATCH TASKS (BACKGROUND)
+    // ===============================
+    {
+      "label": "Watch: Ruff Check",
+      "type": "shell",
+      "command": "ruff",
+      "args": ["check", "--watch", "src/"],
+      "group": "build",
+      "isBackground": true,
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "problemMatcher": {
+        "owner": "ruff",
+        "fileLocation": "relative",
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+):\\s+(\\w+)\\s+(.*)\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5,
+          "code": 6
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^Watching for file changes",
+          "endsPattern": "^Found \\d+ error"
+        }
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    },
+    {
+      "label": "Watch: Type Check",
+      "type": "shell",
+      "command": "ty",
+      "args": ["check", "--watch", "src/"],
+      "group": "build",
+      "isBackground": true,
+      "presentation": {
+        "panel": "dedicated",
+        "reveal": "always",
+        "showReuseMessage": false
+      },
+      "problemMatcher": {
+        "owner": "mypy",
+        "fileLocation": "relative",
+        "pattern": {
+          "regexp": "^(.*):(\\d+):(\\d+):\\s+(error|warning|note):\\s+(.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "severity": 4,
+          "message": 5
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^.*starting.*",
+          "endsPattern": "^.*Success.*"
+        }
+      },
+      "options": {
+        "cwd": "${workspaceFolder}"
+      }
+    }
+  ]
+}
