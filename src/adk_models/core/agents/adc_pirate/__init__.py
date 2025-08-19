@@ -1,7 +1,7 @@
 """ADC agent package.
 
 This package provides the ADC (Agent Development Center) agent implementation
-for handling time and weather queries.
+for general conversational AI assistance with a pirate theme.
 """
 
 from .agent import root_agent

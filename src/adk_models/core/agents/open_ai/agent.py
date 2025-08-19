@@ -1,4 +1,4 @@
-"""OpenAI-compatible agent for answering time and weather questions.
+"""OpenAI-compatible agent for general conversational AI.
 
 This module provides an agent that leverages Google ADC credentials to
 authenticate and interact with the Gemini model through an OpenAI-compatible
@@ -46,8 +46,8 @@ def create_litellm_model(
 def create_agent() -> Agent:
     """Instantiate an OpenAI-compatible agent using Google's Gemini model.
 
-    The agent is configured to answer questions about the time and weather in a
-    city, using the Gemini model accessed via Vertex AI's OpenAI-compatible
+    The agent is configured to assist users with a wide range of questions and
+    tasks, using the Gemini model accessed via Vertex AI's OpenAI-compatible
     endpoint. Credentials are automatically refreshed and used as the API key.
 
     Returns:

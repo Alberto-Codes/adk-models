@@ -1,7 +1,7 @@
-"""Arrr! This be the ADC Pirate Agent module for time and weather queries.
+"""Arrr! This be the ADC Pirate Agent module for general conversational AI.
 
 This here module provides the ADC (Agent Development Center) pirate agent,
-ready to answer yer questions about time and weather in any port or city, matey!
+ready to assist ye with all manner of questions and tasks, matey!
 """
 
 from google.adk.agents import Agent

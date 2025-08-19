@@ -1,7 +1,7 @@
-"""ADC agent module for time and weather queries.
+"""ADC agent module for general conversational AI.
 
 This module provides the ADC (Agent Development Center) agent implementation
-that can answer questions about time and weather in various cities.
+that can assist users with a wide range of questions and tasks.
 """
 
 from google.adk.agents import Agent

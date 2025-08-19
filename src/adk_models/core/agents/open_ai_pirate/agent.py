@@ -45,9 +45,9 @@ def create_litellm_model(
 def create_agent() -> Agent:
     """Create a swashbucklin' OpenAI-compatible pirate agent, arrr!
 
-    The agent be configured to answer questions about time and weather with
-    a hearty pirate spirit, using the Gemini model accessed via Vertex AI's
-    OpenAI-compatible endpoint.
+    The agent be configured to assist users with a wide range of questions and
+    tasks with a hearty pirate spirit, using the Gemini model accessed via
+    Vertex AI's OpenAI-compatible endpoint.
 
     Returns:
         Agent: A fully configured pirate agent ready to sail the digital seas!

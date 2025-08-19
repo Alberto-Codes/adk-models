@@ -1,15 +1,17 @@
 # ADK Models
 
-A Google Agent Development Kit (ADK) project featuring agents that can answer questions about time and weather using Google's Gemini models.
+A Google Agent Development Kit (ADK) project featuring conversational AI agents built with Google's Gemini models.
 
 ## Overview
 
-This project demonstrates how to build AI agents using the Google Agent Development Kit (ADK). It includes two implementations:
+This project demonstrates how to build AI agents using the Google Agent Development Kit (ADK). It includes multiple implementations:
 
 1. **ADC Agent** (`adc/`) - Uses ADK's default authentication method (Application Default Credentials) with Google's Gemini models
 2. **OpenAI-Compatible Agent** (`openai/`) - Uses Google's OpenAI-compatible endpoint for Gemini models via the LiteLlm wrapper, authenticating with ADC credentials (not an API key)
+3. **Pirate-themed Agents** - Fun variations that respond with pirate-style language
+4. **Sequential Agent** - Demonstrates combining multiple agents
 
-Both agents can respond to user queries about time and weather in various cities, showcasing different ways to connect to Google's Gemini models.
+All agents are general-purpose conversational AI assistants that showcase different ways to connect to Google's Gemini models.
 
 ## Prerequisites
 
@@ -181,10 +183,10 @@ adk api_server
 ### Example Queries
 
 Try these sample prompts with your agent:
-- "What is the weather in New York?"
-- "What is the current time in New York?"
-- "What is the weather in Paris?"
-- "What is the time in Paris?"
+- "Hello, how can you help me today?"
+- "What can you tell me about artificial intelligence?"
+- "Can you help me write a Python function?"
+- "Explain the difference between machine learning and deep learning"
 
 ## Project Structure
 
@@ -198,9 +200,18 @@ adk-models/
 │               ├── adc/
 │               │   ├── __init__.py
 │               │   └── agent.py          # Default ADK authentication
-│               └── openai/
+│               ├── adc_pirate/
+│               │   ├── __init__.py
+│               │   └── agent.py          # Pirate-themed ADC agent
+│               ├── openai/
+│               │   ├── __init__.py
+│               │   └── agent.py          # OpenAI-compatible endpoint
+│               ├── openai_pirate/
+│               │   ├── __init__.py
+│               │   └── agent.py          # Pirate-themed OpenAI agent
+│               └── openai_sequential/
 │                   ├── __init__.py
-│                   └── agent.py          # OpenAI-compatible endpoint
+│                   └── agent.py          # Sequential agent combining others
 ├── pyproject.toml                        # Project configuration
 ├── README.md                            # This file
 ├── .env                                 # Environment variables (create this)
@@ -210,7 +221,7 @@ adk-models/
 
 ## Agent Details
 
-This project includes two different agent implementations:
+This project includes several different agent implementations:
 
 ### 1. ADC Agent (`src/adk_models/core/agents/adc/agent.py`)
 
@@ -232,7 +243,15 @@ Demonstrates using Google's **OpenAI-compatible endpoint** with ADC credentials:
 - **Use Case**: Ideal for OpenAI-compatible workflows using Google Gemini with secure ADC authentication
 - **Dependencies**: Requires the `google-adk` Python library
 
-Both agents provide the same capabilities but showcase different connection methods to Google's Gemini models.
+### 3. Pirate-Themed Agents
+
+Both ADC and OpenAI-compatible agents have pirate-themed variations that respond with swashbuckling flair while maintaining the same underlying capabilities.
+
+### 4. Sequential Agent
+
+Demonstrates combining multiple agents into a single sequential workflow.
+
+All agents provide conversational AI capabilities and showcase different connection methods to Google's Gemini models.
 
 ## Usage Notes for OpenAI-Compatible Agent
 
@@ -269,8 +288,8 @@ model = LiteLlm(
 agent = Agent(
     name="openai_agent",
     model=model,
-    description="Agent to answer questions about the time and weather in a city using Google's OpenAI-compatible endpoint.",
-    instruction="You are a helpful agent who can answer user questions about the time and weather in a city. You are powered by Google's Gemini model accessed through the OpenAI-compatible API.",
+    description="A helpful AI agent designed to assist users with a wide range of questions and tasks using Google's OpenAI-compatible endpoint.",
+    instruction="You are a helpful AI agent. Assist users with their questions and tasks to the best of your ability. You are powered by Google's Gemini model accessed through the OpenAI-compatible API.",
 )
 ```
 
@@ -303,16 +322,16 @@ Both agents can be extended with new capabilities while maintaining their respec
 
 **For the default ADC agent:**
 ```python
-def get_current_weather(city: str) -> dict:
+def get_custom_functionality(query: str) -> dict:
     """Your tool implementation here"""
     pass
 
 root_agent = Agent(
     name="adc_agent",
     model="gemini-2.0-flash",  # Default ADK approach
-    tools=[get_current_weather],
-    description="Agent with weather capabilities",
-    instruction="You can help with weather and other queries",
+    tools=[get_custom_functionality],
+    description="Agent with custom capabilities",
+    instruction="You can help with various queries and tasks",
 )
 ```
 
@@ -330,16 +349,16 @@ class GeminiOpenAIModel:
             base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
         )
 
-def get_current_weather(city: str) -> dict:
+def get_custom_functionality(query: str) -> dict:
     """Your tool implementation here"""
     pass
 
 root_agent = Agent(
     name="adc_openai_compat_agent",
     model=GeminiOpenAIModel("gemini-2.0-flash"),
-    tools=[get_current_weather],
-    description="Agent with weather capabilities via OpenAI endpoint",
-    instruction="You can help with weather and other queries",
+    tools=[get_custom_functionality],
+    description="Agent with custom capabilities via OpenAI endpoint",
+    instruction="You can help with various queries and tasks",
 )
 ```
 
