@@ -9,6 +9,11 @@ import os
 
 import google.auth
 import google.auth.transport.requests
+
+from adk_models.core.agents.constants import (
+    DEFAULT_AGENT_DESCRIPTION,
+    DEFAULT_AGENT_INSTRUCTION,
+)
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
 from google.auth.credentials import Credentials
@@ -41,27 +46,21 @@ def create_agent() -> Agent:
     auth_req = google.auth.transport.requests.Request()
     credentials.refresh(auth_req)
     adc_token = credentials.token
-    model = LiteLlm(
-        api_base=(
+    api_base = (
             f"https://{os.getenv('GOOGLE_CLOUD_LOCATION')}-aiplatform.googleapis.com/v1/"
             f"projects/{os.getenv('GOOGLE_CLOUD_PROJECT')}/locations/"
             f"{os.getenv('GOOGLE_CLOUD_LOCATION')}/endpoints/openapi"
-        ),
+        )
+    model = LiteLlm(
+        api_base=api_base,
         api_key=adc_token,
         model="openai/google/gemini-2.0-flash",
     )
     return Agent(
         name="openai_agent",
         model=model,
-        description=(
-            "Agent to answer questions about the time and weather in a city "
-            "using Google's OpenAI-compatible endpoint."
-        ),
-        instruction=(
-            "You are a helpful agent who can answer user questions about "
-            "the time and weather in a city. You are powered by Google's "
-            "Gemini model accessed through the OpenAI-compatible API."
-        ),
+        description=DEFAULT_AGENT_DESCRIPTION,
+        instruction=DEFAULT_AGENT_INSTRUCTION,
     )
 
 
