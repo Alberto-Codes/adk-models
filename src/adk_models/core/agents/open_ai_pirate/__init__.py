@@ -4,6 +4,6 @@ This package contains the ADC agent implementation that uses Google's
 OpenAI-compatible endpoint for Gemini models.
 """
 
-from . import agent
+from .agent import root_agent
 
-__all__ = ["agent"]
+__all__ = ["root_agent"]

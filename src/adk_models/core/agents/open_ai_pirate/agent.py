@@ -34,8 +34,7 @@ def create_api_key() -> Credentials:
 
 
 def create_agent() -> Agent:
-    """Summon an OpenAI-compatible pirate agent usin' Google's Gemini model,
-    arrr!
+    """Summon an OpenAI-compatible pirate agent usin' Google's Gemini model, arrr!
 
     This agent be ready to answer yer questions about time and weather in any
     city, usin' the Gemini model via Vertex AI's OpenAI-compatible endpoint.
