@@ -9,14 +9,14 @@ import os
 
 import google.auth
 import google.auth.transport.requests
+from google.adk.agents import Agent
+from google.adk.models.lite_llm import LiteLlm
+from google.auth.credentials import Credentials
 
 from adk_models.core.agents.constants import (
     DEFAULT_AGENT_DESCRIPTION,
     DEFAULT_AGENT_INSTRUCTION,
 )
-from google.adk.agents import Agent
-from google.adk.models.lite_llm import LiteLlm
-from google.auth.credentials import Credentials
 
 
 def create_api_key() -> Credentials:
@@ -47,10 +47,10 @@ def create_agent() -> Agent:
     credentials.refresh(auth_req)
     adc_token = credentials.token
     api_base = (
-            f"https://{os.getenv('GOOGLE_CLOUD_LOCATION')}-aiplatform.googleapis.com/v1/"
-            f"projects/{os.getenv('GOOGLE_CLOUD_PROJECT')}/locations/"
-            f"{os.getenv('GOOGLE_CLOUD_LOCATION')}/endpoints/openapi"
-        )
+        f"https://{os.getenv('GOOGLE_CLOUD_LOCATION')}-aiplatform.googleapis.com/v1/"
+        f"projects/{os.getenv('GOOGLE_CLOUD_PROJECT')}/locations/"
+        f"{os.getenv('GOOGLE_CLOUD_LOCATION')}/endpoints/openapi"
+    )
     model = LiteLlm(
         api_base=api_base,
         api_key=adc_token,

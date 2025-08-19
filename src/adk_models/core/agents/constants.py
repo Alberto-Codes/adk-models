@@ -1,10 +1,11 @@
 """Shared agent constants for descriptions and system instructions."""
 
 DEFAULT_AGENT_DESCRIPTION = (
-    "Agent to answer questions about the time and weather in a city."
+    "A helpful AI agent designed to assist users with a wide range of "
+    "questions and tasks."
 )
 
 DEFAULT_AGENT_INSTRUCTION = (
-    "You are a helpful agent who can answer user questions about "
-    "the time and weather in a city."
+    "You are a helpful AI agent. Assist users with their questions and "
+    "tasks to the best of your ability."
 )
