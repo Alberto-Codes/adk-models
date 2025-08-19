@@ -142,8 +142,11 @@ GOOGLE_GENAI_USE_VERTEXAI=TRUE
    pip install -e .[dev]
    
    # For the OpenAI-compatible agent, you also need:
-   pip install openai
+   pip install "openai<1.100"
    ```
+
+> **Note:**
+> Due to a breaking change in `openai` version 1.100.0 and above ([see issue #2564](https://github.com/openai/openai-python/issues/2564)), you must use `openai<1.100`. Version 1.100.0 and later moved or removed some internal types, causing import errors in libraries that depend on the previous structure (such as LiteLLM and others). Until upstream dependencies are updated, please avoid `openai>=1.100.0`.
 
 ## Usage
 
