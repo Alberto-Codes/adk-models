@@ -1,46 +1,57 @@
+"""OpenAI-compatible Pirate Agent module.
 
-import os
+This module provides a pirate-themed agent that uses Google's OpenAI-compatible
+endpoint for Gemini models with ADC authentication, arr!
+"""
 
-import google.auth
-import google.auth.transport.requests
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
-from google.auth.credentials import Credentials
 
+from adk_models.core.auth import get_adc_token, build_openai_api_base
 from adk_models.core.agents.constants import (
     PIRATE_AGENT_DESCRIPTION,
     PIRATE_AGENT_INSTRUCTION,
 )
 
+def create_litellm_model(
+    model_name: str = "openai/google/gemini-2.0-flash",
+) -> LiteLlm:
+    """Create a LiteLLM model configured for Google's OpenAI endpoint.
 
-def create_api_key() -> Credentials:
-    """Obtain Google ADC credentials for authenticatin' API requests, arrr!
+    Args:
+        model_name: The model identifier to use. Defaults to
+            "openai/google/gemini-2.0-flash".
 
     Returns:
-        Credentials: An authorized credentials object with cloud-platform
-        scope.
+        LiteLlm: A configured LiteLLM model instance.
+
+    Raises:
+        ValueError: If required environment variables are not set.
+        google.auth.exceptions.RefreshError: If token refresh fails.
+        google.auth.exceptions.DefaultCredentialsError: If ADC credentials
+            cannot be found or loaded.
     """
-    credentials, _ = google.auth.default(
-        scopes=["https://www.googleapis.com/auth/cloud-platform"]
+    api_base = build_openai_api_base()
+    api_key = get_adc_token()
+
+    return LiteLlm(
+        api_base=api_base,
+        api_key=api_key,
+        model=model_name,
     )
-    return credentials
 
 
 def create_agent() -> Agent:
-    credentials = create_api_key()
-    auth_req = google.auth.transport.requests.Request()
-    credentials.refresh(auth_req)
-    adc_token = credentials.token
-    api_base = (
-        f"https://{os.getenv('GOOGLE_CLOUD_LOCATION')}-aiplatform.googleapis.com/v1/"
-        f"projects/{os.getenv('GOOGLE_CLOUD_PROJECT')}/locations/"
-        f"{os.getenv('GOOGLE_CLOUD_LOCATION')}/endpoints/openapi"
-    )
-    model = LiteLlm(
-        api_base=api_base,
-        api_key=adc_token,
-        model="openai/google/gemini-2.0-flash",
-    )
+    """Create a swashbucklin' OpenAI-compatible pirate agent, arrr!
+
+    The agent be configured to answer questions about time and weather with
+    a hearty pirate spirit, using the Gemini model accessed via Vertex AI's
+    OpenAI-compatible endpoint.
+
+    Returns:
+        Agent: A fully configured pirate agent ready to sail the digital seas!
+    """
+    model = create_litellm_model()
     return Agent(
         name="openai_pirate_agent",
         model=model,
