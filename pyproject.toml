@@ -83,11 +83,8 @@ select = [
 ]
 
 ignore = [
-    "E501",   # Line too long (handled by formatter)
-    # "D100",   # Missing docstring in public module (can be too strict for __init__.py)
-    # "D104",   # Missing docstring in public package (can be too strict for __init__.py)
-    # "S101",   # Use of `assert` (common in tests)
-    "PLR0913", # Too many arguments to function call (sometimes necessary)
+    # "E501",   # Line too long (handled by formatter)
+    # "PLR0913", # Too many arguments to function call (sometimes necessary)
 ]
 
 [tool.ruff.format]
@@ -121,9 +118,6 @@ multiline-quotes = "double"
 [tool.ruff.lint.per-file-ignores]
 # Allow missing docstrings in test files and __init__.py files
 "tests/**/*.py" = ["D100", "D101", "D102", "D103", "D104", "S101"]
-# "**/__init__.py" = ["D104"]
-# Allow star imports in __init__.py files
-# "*/__init__.py" = ["F401", "F403"]
 
 [tool.pytest.ini_options]
 # Basic pytest configuration
