@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [project.scripts]
-new-project = "new_python_project:main"
+new-python-project = "new_python_project:main"
 
 [build-system]
 requires = ["hatchling"]
