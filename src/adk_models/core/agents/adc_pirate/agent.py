@@ -6,7 +6,7 @@ ready to answer yer questions about time and weather in any port or city, matey!
 
 from google.adk.agents import Agent
 
-from adk_models.core.agents.constants import (
+from adk_models.core.constants import (
     PIRATE_AGENT_DESCRIPTION,
     PIRATE_AGENT_INSTRUCTION,
 )

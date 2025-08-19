@@ -7,11 +7,11 @@ endpoint for Gemini models with ADC authentication, arr!
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
 
-from adk_models.core.agents.constants import (
+from adk_models.core.auth import build_openai_api_base, get_adc_token
+from adk_models.core.constants import (
     PIRATE_AGENT_DESCRIPTION,
     PIRATE_AGENT_INSTRUCTION,
 )
-from adk_models.core.auth import build_openai_api_base, get_adc_token
 
 
 def create_litellm_model(

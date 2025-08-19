@@ -6,7 +6,7 @@ that can answer questions about time and weather in various cities.
 
 from google.adk.agents import Agent
 
-from adk_models.core.agents.constants import (
+from adk_models.core.constants import (
     DEFAULT_AGENT_DESCRIPTION,
     DEFAULT_AGENT_INSTRUCTION,
 )
