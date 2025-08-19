@@ -1,0 +1,141 @@
+[project]
+name = "new-python-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Alberto-Codes", email = "94092485+Alberto-Codes@users.noreply.github.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+]
+
+[project.scripts]
+new-project = "new_python_project:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.1",
+    "ruff>=0.12.7",
+    "ty>=0.0.1a17",
+]
+
+# Ruff configuration for Google Python Style Guide compliance
+[tool.ruff]
+
+# Same as Google Style Guide
+line-length = 80
+indent-width = 4
+
+# Assume Python 3.12+
+target-version = "py312"
+
+# Exclude common directories
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+
+[tool.ruff.lint]
+# Enable pycodestyle (`E`) and Pyflakes (`F`) codes by default.
+# Plus additional rule sets for Google style compliance
+select = [
+    "E",    # pycodestyle errors
+    "W",    # pycodestyle warnings
+    "F",    # Pyflakes
+    "I",    # isort (import sorting)
+    "N",    # pep8-naming
+    "D",    # pydocstyle (docstring conventions)
+    "UP",   # pyupgrade (modern Python idioms)
+    "B",    # flake8-bugbear (likely bugs)
+    "S",    # flake8-bandit (security issues)
+    "C4",   # flake8-comprehensions
+    "PTH",  # flake8-use-pathlib
+    "SIM",  # flake8-simplify
+    "RET",  # flake8-return
+    "ARG",  # flake8-unused-arguments
+    "PL",   # Pylint
+    "PERF", # Perflint
+]
+
+ignore = [
+    "E501",   # Line too long (handled by formatter)
+    "D100",   # Missing docstring in public module (can be too strict for __init__.py)
+    "D104",   # Missing docstring in public package (can be too strict for __init__.py)
+    "S101",   # Use of `assert` (common in tests)
+    "PLR0913", # Too many arguments to function call (sometimes necessary)
+]
+
+[tool.ruff.format]
+# Use double quotes for strings (Google style preference)
+quote-style = "double"
+
+# Indent with spaces, not tabs
+indent-style = "space"
+
+# Respect magic trailing commas
+skip-magic-trailing-comma = false
+
+# Automatically detect the appropriate line ending
+line-ending = "auto"
+
+[tool.ruff.lint.pydocstyle]
+# Use Google-style docstrings
+convention = "google"
+
+[tool.ruff.lint.isort]
+# Group imports according to Google style
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+split-on-trailing-comma = true
+known-first-party = ["new_project"]
+
+[tool.ruff.lint.flake8-quotes]
+# Prefer double quotes (Google style)
+inline-quotes = "double"
+multiline-quotes = "double"
+
+[tool.ruff.lint.per-file-ignores]
+# Allow missing docstrings in test files and __init__.py files
+"tests/**/*.py" = ["D100", "D101", "D102", "D103", "D104", "S101"]
+"**/__init__.py" = ["D104"]
+# Allow star imports in __init__.py files
+"*/__init__.py" = ["F401", "F403"]
+
+[tool.pytest.ini_options]
+# Basic pytest configuration
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "-ra",  # Show short test summary for all except passed
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+]
