@@ -11,22 +11,6 @@ import google.auth.transport.requests
 from google.auth.credentials import Credentials
 
 
-def create_adc_credentials() -> Credentials:
-    """Obtain Google ADC credentials for authenticating API requests.
-
-    Returns:
-        Credentials: An authorized credentials object with cloud-platform scope.
-
-    Raises:
-        google.auth.exceptions.DefaultCredentialsError: If ADC credentials
-            cannot be found or loaded.
-    """
-    credentials, _ = google.auth.default(
-        scopes=["https://www.googleapis.com/auth/cloud-platform"]
-    )
-    return credentials
-
-
 def get_adc_token() -> str:
     """Get a fresh access token from ADC credentials.
 
@@ -38,13 +22,22 @@ def get_adc_token() -> str:
         google.auth.exceptions.DefaultCredentialsError: If ADC credentials
             cannot be found or loaded.
     """
-    credentials = create_adc_credentials()
-    auth_req = google.auth.transport.requests.Request()
+    credentials: Credentials
+    project: str | None
+    credentials, project = google.auth.default(
+        scopes=["https://www.googleapis.com/auth/cloud-platform"]
+    )
+
+    auth_req: google.auth.transport.requests.Request = (
+        google.auth.transport.requests.Request()
+    )
     credentials.refresh(auth_req)
-    token = credentials.token
+
+    token: str | None = credentials.token
     if token is None:
         msg = "Failed to obtain access token from credentials"
         raise ValueError(msg)
+
     return token
 
 
