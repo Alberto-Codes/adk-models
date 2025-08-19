@@ -12,7 +12,8 @@ from adk_models.core.agents.constants import (
     DEFAULT_AGENT_DESCRIPTION,
     DEFAULT_AGENT_INSTRUCTION,
 )
-from adk_models.core.auth import get_adc_token, build_openai_api_base
+from adk_models.core.auth import build_openai_api_base, get_adc_token
+
 
 def create_litellm_model(
     model_name: str = "openai/google/gemini-2.0-flash",

@@ -8,7 +8,6 @@ import os
 
 import google.auth
 import google.auth.transport.requests
-from google.adk.models.lite_llm import LiteLlm
 from google.auth.credentials import Credentials
 
 
