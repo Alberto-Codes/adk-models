@@ -12,7 +12,7 @@ dependencies = [
 ]
 
 [project.scripts]
-adk-models = "new_python_project:main"
+adk-models = "adk_models:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -84,9 +84,9 @@ select = [
 
 ignore = [
     "E501",   # Line too long (handled by formatter)
-    "D100",   # Missing docstring in public module (can be too strict for __init__.py)
-    "D104",   # Missing docstring in public package (can be too strict for __init__.py)
-    "S101",   # Use of `assert` (common in tests)
+    # "D100",   # Missing docstring in public module (can be too strict for __init__.py)
+    # "D104",   # Missing docstring in public package (can be too strict for __init__.py)
+    # "S101",   # Use of `assert` (common in tests)
     "PLR0913", # Too many arguments to function call (sometimes necessary)
 ]
 
@@ -111,7 +111,7 @@ convention = "google"
 # Group imports according to Google style
 section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 split-on-trailing-comma = true
-known-first-party = ["new_project"]
+known-first-party = ["adk_models"]
 
 [tool.ruff.lint.flake8-quotes]
 # Prefer double quotes (Google style)
@@ -121,9 +121,9 @@ multiline-quotes = "double"
 [tool.ruff.lint.per-file-ignores]
 # Allow missing docstrings in test files and __init__.py files
 "tests/**/*.py" = ["D100", "D101", "D102", "D103", "D104", "S101"]
-"**/__init__.py" = ["D104"]
+# "**/__init__.py" = ["D104"]
 # Allow star imports in __init__.py files
-"*/__init__.py" = ["F401", "F403"]
+# "*/__init__.py" = ["F401", "F403"]
 
 [tool.pytest.ini_options]
 # Basic pytest configuration
