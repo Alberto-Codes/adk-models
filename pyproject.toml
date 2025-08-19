@@ -1,5 +1,5 @@
 [project]
-name = "new-python-project"
+name = "new-python"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -11,7 +11,7 @@ dependencies = [
 ]
 
 [project.scripts]
-new-python-project = "new_python_project:main"
+new-python = "new_python_project:main"
 
 [build-system]
 requires = ["hatchling"]

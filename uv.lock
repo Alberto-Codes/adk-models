@@ -21,7 +21,7 @@ wheels = [
 ]
 
 [[package]]
-name = "new-python-project"
+name = "new-python"
 version = "0.1.0"
 source = { editable = "." }
 
