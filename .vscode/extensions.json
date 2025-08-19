@@ -1,0 +1,16 @@
+{
+    "recommendations": [
+        "eamodio.gitlens",
+        "ms-python.python",
+        "charliermarsh.ruff",
+        "astral-sh.ty",
+        "tamasfe.even-better-toml",
+        "github.vscode-pull-request-github",
+        "shd101wyy.markdown-preview-enhanced",
+        "bierner.markdown-mermaid",
+        "mechatroner.rainbow-csv",
+        "alexcvzz.vscode-sqlite",
+        "qwtel.sqlite-viewer",
+        "ms-vscode-remote.remote-wsl"
+    ]
+}
